@@ -1,10 +1,28 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// (Disabling the above since we don't need to run the function, it's just a dummy)
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/// <reference path="types/globals.d.ts"/>
 
-/**
- * Function to test that all type checking and linting utilities are working as intended.
- *
- * @param param1 - Test parameter 1
- * @param param2 - Test parameter 2
- */
-export function main (param1: string, param2: number): void {}
+/* eslint-disable import/first */
+import dotenv from 'dotenv-safe'
+dotenv.config()
+
+import pino from 'pino'
+import { PrismaClient } from '@prisma/client'
+
+global.logger = pino({
+  transport: {
+    target: process.env.NODE_ENV !== 'production' ? 'pino-pretty' : ''
+  }
+})
+
+const prisma = new PrismaClient()
+
+void (async () => {
+  try {
+    await prisma.$connect()
+    logger.info('Started')
+  } catch (err) {
+    logger.error('Could not start application', err)
+  } finally {
+    await prisma.$disconnect()
+  }
+})()

@@ -108,3 +108,6 @@ lib
 
 # TypeDoc output
 docs
+
+# Config
+*.env

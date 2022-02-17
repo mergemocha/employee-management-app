@@ -1,0 +1,26 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongoDb"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGO_URL")
+}
+
+model User {
+  id          String    @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  username    String    @unique
+  password    String
+  sessions    Session[]
+  permissions String[]
+}
+
+model Session {
+  id     String @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  token  String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @db.ObjectId
+}
+
+// TODO: Employee model

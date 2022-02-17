@@ -1,0 +1,12 @@
+version: '3'
+services:
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    restart: always
+    env_file:
+      - mongodb.env
+    ports:
+      - 27017:27017
+    volumes:
+      - ./docker-entrypoint-initdb.d/mongo-init.sh:/docker-entrypoint-initdb.d/00-mongo-init.sh
