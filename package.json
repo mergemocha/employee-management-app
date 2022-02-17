@@ -1,5 +1,5 @@
 {
-  "name": "employee-management-app",
+  "name": "employee-management-app-backend",
   "version": "1.0.0",
   "description": "Organisation-level boilerplate for TypeScript projects",
   "main": "lib/index.js",
@@ -18,14 +18,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mergemocha/employee-management-app.git"
+    "url": "git+https://github.com/mergemocha/employee-management-app-backend.git"
   },
   "author": "Linus Willner, Anna Smati, Panu Eronen",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mergemocha/employee-management-app/issues"
+    "url": "https://github.com/mergemocha/employee-management-app-backend/issues"
   },
-  "homepage": "https://github.com/mergemocha/employee-management-app#readme",
+  "homepage": "https://github.com/mergemocha/employee-management-app-backend#readme",
   "devDependencies": {
     "@types/jest": "^27.4.0",
     "@types/node": "^17.0.18",

@@ -1,6 +1,6 @@
-# employee-management-app
+# employee-management-app-backend
 
-Course project for Web-sovelluskehitys 2 TX00DZ38-3004 at Metropolia UAS
+Course project for Web-sovelluskehitys 2 TX00DZ38-3004 at Metropolia UAS. Backend component.
 
 ## Setup
 
