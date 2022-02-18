@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node-dev src/index.ts --files",
     "build": "tsc",
-    "prisma:gen": "prisma db pull && prisma client generate",
+    "prisma:gen": "prisma db pull && prisma generate",
     "prisma:up": "prisma db push",
     "test": "jest --passWithNoTests",
     "test:watch": "npm test -- --watch",
