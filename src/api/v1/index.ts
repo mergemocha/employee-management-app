@@ -4,5 +4,5 @@ import permissions from './permissions'
 
 export default async (fastify: FastifyInstance, options: FastifyPluginOptions): Promise<void> => {
   await fastify
-    .register(permissions, { prefix: '/permissions', prisma: options.prisma })
+    .register(permissions, { prefix: '/permissions' })
 }

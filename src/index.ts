@@ -14,15 +14,15 @@ global.logger = pino({
   }
 })
 
+// Configure Prisma
+import * as prismaUtils from './utils/prisma'
+global.prisma = prismaUtils.init()
+
 import Fastify from 'fastify'
 import helmet from 'fastify-helmet'
 import cors from 'fastify-cors'
 import middie from 'middie'
-import * as prismaUtils from './utils/prisma'
 import v1 from './api/v1'
-
-// Configure Prisma
-const prisma = prismaUtils.init()
 
 // Configure Fastify
 const fastify = Fastify({
