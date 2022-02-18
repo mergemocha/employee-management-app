@@ -8,6 +8,7 @@
     "build": "tsc",
     "prisma:gen": "prisma generate",
     "prisma:up": "prisma db push",
+    "key:gen": "openssl rand -base64 756 > ./docker-entrypoint-initdb.d/prod.key",
     "test": "jest --passWithNoTests",
     "test:watch": "npm test -- --watch",
     "test:coverage": "npm test -- --config jest.coverage.js",

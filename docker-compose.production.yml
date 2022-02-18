@@ -9,9 +9,10 @@ services:
       - .env
     depends_on:
       - mongodb
-  mongodb:
-    container_name: mongodb
+  mongodb-primary:
+    container_name: mongodb-primary
     image: mongo:latest
+    command: mongod --bind_ip_all --replSet mongo-cluster --keyFile /docker-entrypoint-initdb.d/prod.key
     restart: always
     environment:
       NODE_ENV: production
@@ -21,3 +22,18 @@ services:
       - 27017:27017
     volumes:
       - ./docker-entrypoint-initdb.d/mongo-init.sh:/docker-entrypoint-initdb.d/00-mongo-init.sh
+      - ./docker-entrypoint-initdb.d/prod.key:/docker-entrypoint-initdb.d/prod.key
+  mongodb-replica:
+    container_name: mongodb-replica
+    image: mongo:latest
+    command: mongod --bind_ip_all --replSet mongo-cluster --keyFile /docker-entrypoint-initdb.d/prod.key
+    restart: always
+    depends_on:
+      - mongodb-primary
+    env_file:
+      - mongodb.env
+    ports:
+      - 27017:27017
+    volumes:
+      - ./docker-entrypoint-initdb.d/mongo-init.sh:/docker-entrypoint-initdb.d/00-mongo-init.sh
+      - ./docker-entrypoint-initdb.d/prod.key:/docker-entrypoint-initdb.d/prod.key

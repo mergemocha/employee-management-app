@@ -1,12 +1,26 @@
 version: '3'
 services:
-  mongodb:
-    container_name: mongodb
+  mongodb-primary:
+    container_name: mongodb-primary
     image: mongo:latest
-    restart: always
+    command: mongod --bind_ip_all --replSet mongo-cluster --keyFile /docker-entrypoint-initdb.d/dev.key
     env_file:
       - mongodb.env
     ports:
       - 27017:27017
     volumes:
       - ./docker-entrypoint-initdb.d/mongo-init.sh:/docker-entrypoint-initdb.d/00-mongo-init.sh
+      - ./docker-entrypoint-initdb.d/dev.key:/docker-entrypoint-initdb.d/dev.key
+  mongodb-replica:
+    container_name: mongodb-replica
+    image: mongo:latest
+    command: mongod --replSet mongo-cluster --keyFile /docker-entrypoint-initdb.d/dev.key
+    depends_on:
+      - mongodb-primary
+    env_file:
+      - mongodb.env
+    ports:
+      - 27018:27017
+    volumes:
+      - ./docker-entrypoint-initdb.d/mongo-init.sh:/docker-entrypoint-initdb.d/00-mongo-init.sh
+      - ./docker-entrypoint-initdb.d/dev.key:/docker-entrypoint-initdb.d/dev.key
