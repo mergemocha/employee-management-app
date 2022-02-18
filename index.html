@@ -10,15 +10,25 @@
 <p>Prerequisites:</p>
 <ul>
 <li><a href="https://docker.io">Docker and Docker Compose</a></li>
+<li>(For production: <a href="https://www.openssl.org">OpenSSL</a>)</li>
 </ul>
 <pre><code class="language-bash"><span class="hl-0">cp .env.example .env</span><br/><span class="hl-0">cp mongodb.env.example mongodb.env</span><br/><span class="hl-1"># Edit any values as necessary</span>
+</code></pre>
+<p>On Mac: You will need to edit /etc/hosts to correctly route traffic to MongoDB containers due to a known limitation of Docker. Add the following lines:</p>
+<pre><code class="language-h">127.0.0.1 mongodb-primary
+127.0.0.1 mongodb-replica
 </code></pre>
 <p>For development:</p>
 <pre><code class="language-bash"><span class="hl-0">docker compose -f docker-compose.development.yml up -d</span><br/><span class="hl-0">npm run prisma:up</span><br/><span class="hl-0">npm start</span>
 </code></pre>
 <p>For production:</p>
-<pre><code class="language-bash"><span class="hl-0">npm run prisma:gen</span><br/><span class="hl-0">docker compose -f docker-compose.production.yml up -d</span>
+<pre><code class="language-bash"><span class="hl-0">npm run prisma:gen</span><br/><span class="hl-0">npm run key:gen</span><br/><span class="hl-1"># If on *nix: chmod 400 ./docker-entrypoint-initdb.d/prod.key</span><br/><span class="hl-0">docker compose -f docker-compose.production.yml up -d</span>
 </code></pre>
+
+<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+  <h2>Usage</h2>
+</a>
+<p>On first boot, a superuser account will automatically be created. The credentials for this user will be outputted to the terminal <strong>ONLY</strong>. If you lose the superuser credentials, you will need to start over.</p>
 
 <a href="#development" id="development" style="color: inherit; text-decoration: none;">
   <h2>Development</h2>
