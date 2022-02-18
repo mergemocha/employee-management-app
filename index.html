@@ -14,7 +14,7 @@
 <pre><code class="language-bash"><span class="hl-0">cp .env.example .env</span><br/><span class="hl-0">cp mongodb.env.example mongodb.env</span><br/><span class="hl-1"># Edit any values as necessary</span>
 </code></pre>
 <p>For development:</p>
-<pre><code class="language-bash"><span class="hl-0">docker compose -f docker-compose.development.yml up -d</span><br/><span class="hl-0">npm run prisma:gen</span><br/><span class="hl-0">npm start</span>
+<pre><code class="language-bash"><span class="hl-0">docker compose -f docker-compose.development.yml up -d</span><br/><span class="hl-0">npm run prisma:up</span><br/><span class="hl-0">npm start</span>
 </code></pre>
 <p>For production:</p>
 <pre><code class="language-bash"><span class="hl-0">npm run prisma:gen</span><br/><span class="hl-0">docker compose -f docker-compose.production.yml up -d</span>
