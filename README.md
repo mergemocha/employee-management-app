@@ -18,7 +18,7 @@ For development:
 
 ```bash
 docker compose -f docker-compose.development.yml up -d
-npm run prisma:gen
+npm run prisma:up
 npm start
 ```
 
