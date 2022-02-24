@@ -12,6 +12,13 @@ services:
   mongodb-primary:
     container_name: mongodb-primary
     image: mongo:latest
+    entrypoint:
+    - bash
+    - -c
+    - |
+        chmod 400 /docker-entrypoint-initdb.d/prod.key
+        chown 999:999 /docker-entrypoint-initdb.d/prod.key
+        exec docker-entrypoint.sh $$@
     command: mongod --bind_ip_all --replSet mongo-cluster --keyFile /docker-entrypoint-initdb.d/prod.key
     restart: always
     environment:
@@ -22,10 +29,18 @@ services:
       - 27017:27017
     volumes:
       - ./docker-entrypoint-initdb.d/mongo-init.sh:/docker-entrypoint-initdb.d/00-mongo-init.sh
+      - ./docker-entrypoint-initdb.d/mongo-post-init.js:/docker-entrypoint-initdb.d/mongo-post-init.js
       - ./docker-entrypoint-initdb.d/prod.key:/docker-entrypoint-initdb.d/prod.key
   mongodb-replica:
     container_name: mongodb-replica
     image: mongo:latest
+    entrypoint:
+    - bash
+    - -c
+    - |
+        chmod 400 /docker-entrypoint-initdb.d/prod.key
+        chown 999:999 /docker-entrypoint-initdb.d/prod.key
+        exec docker-entrypoint.sh $$@
     command: mongod --bind_ip_all --replSet mongo-cluster --keyFile /docker-entrypoint-initdb.d/prod.key
     restart: always
     depends_on:
@@ -36,4 +51,5 @@ services:
       - 27017:27017
     volumes:
       - ./docker-entrypoint-initdb.d/mongo-init.sh:/docker-entrypoint-initdb.d/00-mongo-init.sh
+      - ./docker-entrypoint-initdb.d/mongo-post-init.js:/docker-entrypoint-initdb.d/mongo-post-init.js
       - ./docker-entrypoint-initdb.d/prod.key:/docker-entrypoint-initdb.d/prod.key

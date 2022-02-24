@@ -26,6 +26,7 @@ For development:
 
 ```bash
 docker compose -f docker-compose.development.yml up -d
+npm run db:init
 npm run prisma:up
 npm start
 ```
