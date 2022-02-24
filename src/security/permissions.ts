@@ -29,5 +29,9 @@ export const getAvailablePermissions = (): Permission[] => available
 
 export const isSuperuser = (user: User): boolean => user.isSuperuser ?? false
 
+// Disabling this because it causes a false flag (would be needless layers of complication to declare permissions as a relation)
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+export const getPermissions = (user: User): Permission[] => isSuperuser(user) ? getAvailablePermissions() : user.permissions as Permission[]
+
 export const hasPermission = (permission: Permission, user: User): boolean =>
   isSuperuser(user) || user.permissions.includes(permission)

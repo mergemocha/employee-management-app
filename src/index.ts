@@ -1,5 +1,6 @@
 /* eslint-disable import/first, @typescript-eslint/triple-slash-reference */
 /// <reference path="types/globals.d.ts"/>
+/// <reference path="../node_modules/fastify-auth/auth.d.ts"/>
 
 // Load env
 import dotenv from 'dotenv-safe'
@@ -21,7 +22,7 @@ global.prisma = prismaUtils.init()
 import Fastify from 'fastify'
 import helmet from 'fastify-helmet'
 import cors from 'fastify-cors'
-import middie from 'middie'
+import auth from 'fastify-auth'
 import v1 from './api/v1'
 
 // Configure Fastify
@@ -43,12 +44,12 @@ void (async () => {
     await fastify
       .register(cors)
       .register(helmet)
-      .register(middie)
+      .register(auth)
       .register(v1, { prefix: '/api/v1', prisma })
 
     await fastify.listen(parseInt(process.env.PORT as string))
   } catch (err) {
-    logger.error(`Could not start application: ${err}`)
+    logger.error(`Could not start application: ${(err as Error).stack}`)
   } finally {
     await prisma.$disconnect()
   }
