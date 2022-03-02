@@ -1,4 +1,4 @@
-/* eslint-disable import/first, @typescript-eslint/triple-slash-reference */
+/* eslint-disable import/first, @typescript-eslint/triple-slash-reference, @typescript-eslint/no-misused-promises */
 /// <reference path="types/globals.d.ts"/>
 /// <reference path="../node_modules/fastify-auth/auth.d.ts"/>
 

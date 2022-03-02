@@ -2,9 +2,9 @@ const admin = db.getSiblingDB('admin')
 
 try {
   const user = _getEnv('MONGO_INITDB_ROOT_USERNAME')
-  const password = _getEnv('MONGO_INITDB_ROOT_PASSWORD')
+  const pwd = _getEnv('MONGO_INITDB_ROOT_PASSWORD')
 
-  admin.auth({ user, password })
+  admin.auth({ user, pwd })
 } catch (err) {
 }
 
