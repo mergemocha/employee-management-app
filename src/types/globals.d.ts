@@ -1,6 +1,8 @@
+/* eslint-disable no-var */
+import { PrismaClient } from '@prisma/client'
 import pino from 'pino'
 
 declare global {
-  // eslint-disable-next-line no-var
   var logger: pino.Logger<pino.LoggerOptions>
+  var prisma: PrismaClient
 }
