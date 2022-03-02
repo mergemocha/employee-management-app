@@ -15,7 +15,7 @@ cp mongodb.env.example mongodb.env
 # Edit any values as necessary
 ```
 
-On Mac: You will need to edit /etc/hosts to correctly route traffic to MongoDB containers due to a known limitation of Docker. Add the following lines:
+In development, you will need to edit the system's hosts file (`/etc/hosts` on *nix systems and `%SYSTEMROOT%\System32\drivers\etc\hosts`) to correctly route traffic to MongoDB containers due to a known limitation of Docker. You can either use the `update-hosts` convenience scripts in `scripts/` (must be run as sudo/administrator), or add the following lines manually using the text editor of your choice:
 
 ```h
 127.0.0.1 mongodb-primary
@@ -36,9 +36,12 @@ For production:
 ```bash
 npm run prisma:gen
 npm run key:gen
-# If on *nix: chmod 400 ./docker-entrypoint-initdb.d/prod.key
 docker compose -f docker-compose.production.yml up -d
+npm run db:init
+npm run prisma:up
 ```
+
+**Note:** The `db:init` script _must_ be run manually after the database container has fully booted for Prisma to work correctly. This is due to a known limitation of MongoDB where replica sets cannot be initialised with DB init scripts in `docker-entrypoint.initdb.d`.
 
 ## Usage
 
