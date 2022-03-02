@@ -1,5 +1,12 @@
 const admin = db.getSiblingDB('admin')
-admin.auth(_getEnv('MONGO_INITDB_ROOT_USERNAME'), _getEnv('MONGO_INITDB_ROOT_PASSWORD'))
+
+try {
+  const user = _getEnv('MONGO_INITDB_ROOT_USERNAME')
+  const password = _getEnv('MONGO_INITDB_ROOT_PASSWORD')
+
+  admin.auth({ user, password })
+} catch (err) {
+}
 
 rs.initiate({
   _id: 'mongo-cluster',

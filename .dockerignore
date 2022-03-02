@@ -1,0 +1,16 @@
+.github
+.husky
+.vscode
+node_modules
+docker-entrypoint-initdb.d
+lib
+scripts
+mongodb.env.example
+.eslint*
+.gitignore
+.nvmrc
+docker-compose*.yml
+Dockerfile
+jest*.js
+LICENSE
+README.md

@@ -31,17 +31,14 @@ npm run prisma:up
 npm start
 ```
 
+**Note:** The `db:init` script _must_ be run manually after the database container has fully booted for Prisma to work correctly. This is due to a known limitation of MongoDB where replica sets cannot be initialised with DB init scripts in `docker-entrypoint.initdb.d`.
+
 For production:
 
 ```bash
-npm run prisma:gen
 npm run key:gen
 docker compose -f docker-compose.production.yml up -d
-npm run db:init
-npm run prisma:up
 ```
-
-**Note:** The `db:init` script _must_ be run manually after the database container has fully booted for Prisma to work correctly. This is due to a known limitation of MongoDB where replica sets cannot be initialised with DB init scripts in `docker-entrypoint.initdb.d`.
 
 ## Usage
 
