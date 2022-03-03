@@ -2,9 +2,9 @@
 .husky
 .vscode
 node_modules
-docker-entrypoint-initdb.d
 lib
-scripts
+scripts/*.ts
+scripts/update-hosts*
 mongodb.env.example
 .eslint*
 .gitignore
