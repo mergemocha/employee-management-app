@@ -6,6 +6,7 @@ try {
 
   admin.auth({ user, pwd })
 } catch (err) {
+  // We're using monogsh meaning we're already authenticated
 }
 
 rs.initiate({
