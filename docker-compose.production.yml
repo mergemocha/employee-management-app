@@ -12,15 +12,6 @@ services:
       - -c
       - |
         if [[ -f .firstboot ]]; then node .; fi
-        until curl -sSL mongodb-primary:27017; do echo "Primary database not yet ready, sleeping." && sleep 3; done
-        echo "Primary database ready."
-        until curl -sSL mongodb-replica:27017; do echo "Secondary database not yet ready, sleeping." && sleep 3; done
-        echo "Replica database ready."
-        export MONGOSH_VERSION=$$(curl -sSL https://api.github.com/repos/mongodb-js/mongosh/releases | jq -r '.[0].name')
-        curl -L https://downloads.mongodb.com/compass/mongosh-$$MONGOSH_VERSION-linux-x64.tgz -o /tmp/mongosh.tgz
-        mkdir /tmp/mongosh
-        tar -xf /tmp/mongosh.tgz -C /tmp/mongosh --wildcards '**/bin/mongosh' --transform 's/.*\///g'
-        /tmp/mongosh/mongosh -- $$(cat production.env | awk -F '="' '/MONGO_URL/{print $$NF}' | sed 's/.$$//') /docker-entrypoint-initdb.d/mongo-post-init.js
         npm run prisma:up
         npm run build
         touch .firstboot
@@ -29,10 +20,25 @@ services:
     env_file:
       - production.env
     depends_on:
+      - db-starter
       - mongodb-primary
       - mongodb-replica
     volumes:
       - ./docker-entrypoint-initdb.d/mongo-post-init.js:/docker-entrypoint-initdb.d/mongo-post-init.js
+  db-starter:
+    container_name: db-starter
+    build:
+      context: .
+      dockerfile: db-starter.Dockerfile
+      cache_from:
+        - debian:stable-slim
+      args:
+        MONGOSH_VERSION: "1.2.2"
+    env_file:
+      - production.env
+    depends_on:
+      - mongodb-primary
+      - mongodb-replica
   mongodb-primary:
     container_name: mongodb-primary
     image: mongo:latest
