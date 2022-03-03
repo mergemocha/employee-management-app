@@ -25,8 +25,8 @@ In development, you will need to edit the system's hosts file (`/etc/hosts` on *
 For development:
 
 ```bash
+npm i
 docker compose -f docker-compose.development.yml up -d
-npm run db:init
 npm run prisma:up
 npm start
 ```
@@ -36,6 +36,7 @@ npm start
 For production:
 
 ```bash
+npm i
 npm run key:gen
 docker compose -f docker-compose.production.yml up -d
 ```

@@ -1,5 +1,19 @@
 version: "3"
 services:
+  db-starter:
+    container_name: db-starter
+    build:
+      context: .
+      dockerfile: db-starter.Dockerfile
+      cache_from:
+        - debian:stable-slim
+      args:
+        MONGOSH_VERSION: "1.2.2"
+    env_file:
+      - .env
+    depends_on:
+      - mongodb-primary
+      - mongodb-replica
   mongodb-primary:
     container_name: mongodb-primary
     image: mongo:latest
