@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import { Prisma, PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient, User } from '@prisma/client'
 import { hashPassword } from '../security/passwords'
 
 function fmtPrismaGeneric (event: Prisma.LogEvent): string {
@@ -45,4 +45,9 @@ export async function checkAndCreateSuperuser (prisma: PrismaClient): Promise<vo
       }
     })
   }
+}
+
+export async function getSuperuser (): Promise<User> {
+  // Superuser is guaranteed to exist after first boot
+  return await prisma.user.findFirst({ where: { isSuperuser: true } }) as User
 }
