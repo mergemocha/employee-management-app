@@ -38,6 +38,7 @@ export async function validateSession (token: string): Promise<boolean> {
     const now = Date.now()
 
     if (expires <= now) {
+      await terminateSession(session)
       throw new Error(`User ${id} submitted expired token; token expired at ${expires}, current time is ${now}`)
     }
 
