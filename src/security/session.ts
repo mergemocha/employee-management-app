@@ -17,14 +17,6 @@ export async function initSession (user: User): Promise<Session> {
   return session
 }
 
-export async function getSession (token: string): Promise<Session | null> {
-  return await prisma.session.findFirst({ where: { token } })
-}
-
-export async function getUserSessions (user: User): Promise<Session[]> {
-  return await prisma.session.findMany({ where: { userId: user.id } })
-}
-
 export async function validateSession (token: string): Promise<boolean> {
   try {
     const { id } = jwt.verify(token, process.env.JWT_SECRET as string) as { id: string } & jwt.JwtPayload
