@@ -8,15 +8,19 @@ export default async (req: FastifyRequest<{ Body: { username: string, password: 
     const user = await prisma.user.findFirst({ where: { username: req.body.username } })
 
     if (!user) {
-      await res.status(404).send({ message: 'Invalid username' })
+      await res.status(401).send({ message: 'Invalid username or password' })
     } else {
-      const hash = user.password
-      const isCorrectPassword = await checkPassword(req.body.password, hash)
-
-      if (isCorrectPassword) {
-        await res.status(200).send({ message: 'Login succesful' })
+      if (!req.body.password) {
+        await res.status(400).send({ message: 'Password not specified' })
       } else {
-        await res.status(404).send({ message: 'Invalid password' })
+        const hash = user.password
+        const isCorrectPassword = await checkPassword(req.body.password, hash)
+
+        if (isCorrectPassword) {
+          await res.status(200).send({ message: 'Login succesful' })
+        } else {
+          await res.status(401).send({ message: 'Invalid username or password' })
+        }
       }
     }
   }
