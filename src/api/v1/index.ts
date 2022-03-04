@@ -2,7 +2,7 @@
 import { FastifyInstance, FastifyPluginOptions } from 'fastify'
 
 import permissions from './permissions'
-import login from './login'
+import login from './authorization'
 
 export default async (fastify: FastifyInstance, options: FastifyPluginOptions): Promise<void> => {
   await fastify
