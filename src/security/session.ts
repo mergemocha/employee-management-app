@@ -68,3 +68,13 @@ export async function terminateSession (session: Session): Promise<void> {
 export async function getSession (token: string): Promise<Session | null> {
   return await prisma.session.findFirst({ where: { token: token } })
 }
+
+export async function getUserBySession (token: string): Promise<User | null> {
+  const session = await getSession(token)
+  if (!session) {
+    logger.warn(`Session corresponding to token ${token} not found. Session has possibly expired`)
+    return null
+  } else {
+    return await prisma.user.findFirst({ where: { id: session.userId } })
+  }
+}

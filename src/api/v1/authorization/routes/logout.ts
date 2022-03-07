@@ -10,6 +10,6 @@ export default async (req: FastifyRequest, res: FastifyReply): Promise<void> => 
   } else {
     await terminateSession(session)
     await res.status(200).send({ message: 'Logout successful' })
-    logger.info(`Session ${session.id} terminated`)
+    logger.info(`Session for token ${req.headers.authorization} terminated`)
   }
 }

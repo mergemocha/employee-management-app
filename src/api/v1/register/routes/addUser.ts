@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { hashPassword } from '../../../../security/passwords'
 
 export default async (req: FastifyRequest<{ Body: { username: string, password: string } }>, res: FastifyReply): Promise<void> => {
-  if (!req.body.username && !req.body.password) {
+  if (!req.body.username || !req.body.password) {
     await res.status(400).send({ message: 'User or password not specified' })
   } else {
     const user = await prisma.user.findFirst({ where: { username: req.body.username } })
