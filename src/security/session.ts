@@ -64,3 +64,7 @@ export async function validateSession (token: string, refresh?: boolean): Promis
 export async function terminateSession (session: Session): Promise<void> {
   await prisma.session.delete({ where: { id: session.id } })
 }
+
+export async function getSession (token: string): Promise<Session | null> {
+  return await prisma.session.findFirst({ where: { token: token } })
+}
