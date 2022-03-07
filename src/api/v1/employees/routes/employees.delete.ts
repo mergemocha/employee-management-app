@@ -1,7 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 
 export default async (req: FastifyRequest<{Body: { id: string } }>, res: FastifyReply): Promise<void> => {
-  console.log('creating')
   if (!req.body.id) {
     await res.status(400).send({ message: 'Field cannot be empty' })
   } else {

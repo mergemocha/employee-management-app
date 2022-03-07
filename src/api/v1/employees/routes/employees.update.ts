@@ -26,8 +26,6 @@ class Validator {
 }
 
 export default async (req: FastifyRequest<{Body: Body}>, res: FastifyReply): Promise<void> => {
-  console.log('creating')
-
   const { error } = jf.validateAsClass(req.body, Validator)
   if (error) {
     await res.status(400).send({ message: 'Validation error ', error })
