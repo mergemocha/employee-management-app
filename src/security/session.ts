@@ -17,7 +17,7 @@ export async function initSession (user: User): Promise<Session> {
   return session
 }
 
-export async function validateSession (token: string): Promise<{ isValid: boolean, newSession?: Session }> {
+export async function validateSession (token: string, refresh?: boolean): Promise<{ isValid: boolean, newSession?: Session }> {
   try {
     // Check that JWT is valid
     const { id } = jwt.verify(token, process.env.JWT_SECRET as string) as { id: string } & jwt.JwtPayload
@@ -46,9 +46,13 @@ export async function validateSession (token: string): Promise<{ isValid: boolea
       throw new Error(`User ${id} submitted expired token; token expired at ${expires}, current time is ${now}`)
     }
 
-    // Refresh session so user is not forced to logout if they keep logging in often enough
-    const newSession = await initSession(user)
-    await terminateSession(session) // Terminate old session to prevent dangling sessions
+    let newSession
+
+    // If relevant, refresh session so user is not forced to logout if they keep logging in often enough
+    if (refresh) {
+      newSession = await initSession(user)
+      await terminateSession(session) // Terminate old session to prevent dangling sessions
+    }
 
     return { isValid: true, newSession }
   } catch (err) {
