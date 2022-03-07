@@ -13,15 +13,16 @@ model User {
   isSuperuser Boolean?
   username    String    @unique
   password    String
-  sessions    Session[]
+  sessions    Session[] @relation("session")
   permissions String[]
 }
 
 model Session {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  token  String
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @db.ObjectId
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  token   String
+  expires Int
+  userId  String @db.ObjectId
+  User    User   @relation("session", fields: [userId], references: [id])
 }
 
 // TODO: Employee model (this is just a stub for development)
