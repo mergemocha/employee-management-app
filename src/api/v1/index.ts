@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { FastifyInstance, FastifyPluginOptions } from 'fastify'
+import employees from './employees'
 
 import permissions from './permissions'
 import authorization from './authorization'
@@ -10,4 +11,5 @@ export default async (fastify: FastifyInstance, options: FastifyPluginOptions): 
     .register(permissions, { prefix: '/permissions' })
     .register(authorization, { prefix: '/auth' })
     .register(register, { prefix: '/register' })
+    .register(employees, { prefix: '/employees' })
 }
