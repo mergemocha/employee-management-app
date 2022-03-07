@@ -24,9 +24,14 @@ model Session {
   userId String @db.ObjectId
 }
 
-// TODO: Employee model (this is just a stub for development)
 model Employee {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  firstName String
-  lastName  String
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  firstName  String
+  lastName   String
+  title      String
+  department String
+  salary     Int
+  secLevel   Int
+  permanent  Boolean
+  projects   String[]
 }

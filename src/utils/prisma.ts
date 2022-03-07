@@ -46,3 +46,33 @@ export async function checkAndCreateSuperuser (prisma: PrismaClient): Promise<vo
     })
   }
 }
+
+// create a single employee for testing purposes
+export async function checkAndCreateEmployee (prisma: PrismaClient): Promise<void> {
+  const empl = await prisma.employee.findMany()
+  if (empl.length === 0) {
+    const firstName = 'fname'
+    const lastName = 'lname'
+    const title = 'very important guy'
+    const department = 'Secret department'
+    const salary = 99999999
+    const secLevel = 5
+    const permanent = true
+    const projects = ['1', 'secret', 'operation X']
+
+    logger.info(`Creating test employe ${firstName},${lastName}`)
+
+    await prisma.employee.create({
+      data: {
+        firstName,
+        lastName,
+        title,
+        department,
+        salary,
+        secLevel,
+        permanent,
+        projects
+      }
+    })
+  }
+}
