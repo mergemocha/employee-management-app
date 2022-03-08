@@ -111,4 +111,5 @@ docs
 
 # Config
 *.env
+!test.env
 docker-entrypoint-initdb.d/prod.key

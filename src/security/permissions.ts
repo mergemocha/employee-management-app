@@ -6,6 +6,9 @@ let available: Permission[]
 
 load()
 
+/**
+ * Loads and parses restricted fields from the RESTRICTED_FIELDS environment variable.
+ */
 export function load (): void {
   try {
     if (!process.env.RESTRICTED_FIELDS) {
@@ -27,23 +30,65 @@ export function load (): void {
   }
 }
 
+/**
+ * Formats an array of keys from the {@link Employee} object into {@link Permission}s.
+ *
+ * @param keys - Keys to convert
+ * @returns Array of {@link Permission} strings
+ */
 export function fmtKeysToPermissions (keys: Array<keyof Employee>): Permission[] {
   return keys.map(key => convertKeyToPermission(key))
 }
 
+/**
+ * Converts a singular key of the {@link Employee} object into a {@link Permission}.
+ *
+ * @param key - Key to convert
+ * @returns A {@link Permission} string
+ */
 export function convertKeyToPermission (key: keyof Employee): Permission {
   return `read:employee.${key}`
 }
 
+/**
+ * Returns all available {@link Permission}s.
+ *
+ * @returns All available {@link Permission}s
+ */
 export const getAvailablePermissions = (): Permission[] => available
 
+/**
+ * Checks whether a {@link User} is a superuser.
+ *
+ * @param user - The {@link User} to check
+ * @returns Whether {@link User} is a superuser
+ */
 export const isSuperuser = (user: User): boolean => user.isSuperuser ?? false
 
+/**
+ * Returns the {@link Permission}s for a user. For superusers, this will always return all available {@link Permission}s.
+ *
+ * @param user - The {@link User} to check
+ * @returns The array from {@link User#permissions}
+ */
 // Disabling this because it causes a false flag (would be needless layers of complication to declare permissions as a relation)
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 export const getPermissions = (user: User): Permission[] => isSuperuser(user) ? getAvailablePermissions() : user.permissions as Permission[]
 
+/**
+ * Checks whether a {@link User} has a certain {@link Permission}.
+ *
+ * @param permission - The {@link Permission} to check for
+ * @param user - The {@link User} to check on
+ * @returns Whether the user has this permission
+ */
 export const hasPermission = (permission: Permission, user: User): boolean =>
   isSuperuser(user) || user.permissions.includes(permission)
 
+/**
+ * Checks whether a key of a {@link Employee} requires permission to read.
+ *
+ * @param key - The key of the {@link Employee} object to check
+ * @returns Whether said key requires granted permission to view
+ */
 export const keyRequiresPermission = (key: keyof Employee): boolean => getAvailablePermissions().includes(convertKeyToPermission(key))
