@@ -45,3 +45,5 @@ export const getPermissions = (user: User): Permission[] => isSuperuser(user) ? 
 
 export const hasPermission = (permission: Permission, user: User): boolean =>
   isSuperuser(user) || user.permissions.includes(permission)
+
+export const keyRequiresPermission = (key: keyof Employee): boolean => getAvailablePermissions().includes(convertKeyToPermission(key))
