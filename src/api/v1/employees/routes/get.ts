@@ -16,7 +16,7 @@ export default async (req: FastifyRequest, res: FastifyReply): Promise<void> => 
     const resultemployee: Partial<IndexableEmployee> = {}
 
     for (const key in employee) {
-      if (hasPermission(convertKeyToPermission(key as keyof Employee), user)) {
+      if (!hasPermission(convertKeyToPermission(key as keyof Employee), user)) {
         continue
       } else {
         resultemployee[key] = employee[key]
