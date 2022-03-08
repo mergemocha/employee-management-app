@@ -81,14 +81,31 @@ export async function validateSession (token: string, refresh?: boolean): Promis
   }
 }
 
+/**
+ * Invalidates a {@link Session}.
+ *
+ * @param session - The {@link Session} to terminate
+ */
 export async function terminateSession (session: Session): Promise<void> {
   await prisma.session.delete({ where: { id: session.id } })
 }
 
+/**
+ * Returns the {@link Session} linked to a {@link Session#token}.
+ *
+ * @param token - Token to fetch session for
+ * @returns The {@link Session} associated with this token
+ */
 export async function getSession (token: string): Promise<Session | null> {
   return await prisma.session.findFirst({ where: { token: token } })
 }
 
+/**
+ * Returns the {@link User} a {@link Session} belongs to based on its {@link Session#token}.
+ *
+ * @param token - Token to fetch user for
+ * @returns The {@link User} associated with the session of this token
+ */
 export async function getUserBySession (token: string): Promise<User | null> {
   const session = await getSession(token)
   if (!session) {
