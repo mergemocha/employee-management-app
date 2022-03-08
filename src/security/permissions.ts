@@ -85,4 +85,10 @@ export const getPermissions = (user: User): Permission[] => isSuperuser(user) ? 
 export const hasPermission = (permission: Permission, user: User): boolean =>
   isSuperuser(user) || user.permissions.includes(permission)
 
+/**
+ * Checks whether a key of a {@link Employee} requires permission to read.
+ *
+ * @param key - The key of the {@link Employee} object to check
+ * @returns Whether said key requires granted permission to view
+ */
 export const keyRequiresPermission = (key: keyof Employee): boolean => getAvailablePermissions().includes(convertKeyToPermission(key))
