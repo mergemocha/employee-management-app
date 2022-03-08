@@ -4,6 +4,8 @@ export type Permission = `read:employee.${keyof Employee}`
 
 let available: Permission[]
 
+load()
+
 /**
  * Loads and parses restricted fields from the RESTRICTED_FIELDS environment variable.
  */
@@ -82,3 +84,5 @@ export const getPermissions = (user: User): Permission[] => isSuperuser(user) ? 
  */
 export const hasPermission = (permission: Permission, user: User): boolean =>
   isSuperuser(user) || user.permissions.includes(permission)
+
+export const keyRequiresPermission = (key: keyof Employee): boolean => getAvailablePermissions().includes(convertKeyToPermission(key))

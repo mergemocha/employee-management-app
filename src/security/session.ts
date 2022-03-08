@@ -1,5 +1,6 @@
 import { Session, User } from '@prisma/client'
 import jwt from 'jsonwebtoken'
+import { DateTime } from 'luxon'
 import { convertToSeconds } from '../utils/relative-time'
 
 /**
@@ -15,10 +16,16 @@ export async function initSession (user: User): Promise<Session> {
   const session = await prisma.session.create({
     data: {
       token,
-      expires: Date.now() + expires,
+      expires: Date.now() + (expires * 1000),
       userId: user.id
     }
   })
+
+  const now = DateTime.now()
+  const expiration = DateTime.fromMillis(session.expires)
+  const diff = expiration.diff(now)
+
+  logger.info(`Initialised session ${session.id} for user ${session.userId} to expire at ${expiration.toLocal()} (${diff.toHuman()}).`)
 
   return session
 }
@@ -63,7 +70,7 @@ export async function validateSession (token: string, refresh?: boolean): Promis
 
     if (expires <= now) {
       await terminateSession(session)
-      throw new Error(`User ${id} submitted expired token; token expired at ${expires}, current time is ${now}`)
+      throw new Error(`User ${id} submitted expired token; token expired at ${DateTime.fromMillis(expires).toLocal()}, current time is ${DateTime.fromMillis(now)}`)
     }
 
     let newSession
@@ -97,7 +104,7 @@ export async function terminateSession (session: Session): Promise<void> {
  * @returns The {@link Session} associated with this token
  */
 export async function getSession (token: string): Promise<Session | null> {
-  return await prisma.session.findFirst({ where: { token: token } })
+  return await prisma.session.findFirst({ where: { token } })
 }
 
 /**
