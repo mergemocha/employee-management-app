@@ -66,7 +66,7 @@ export async function terminateSession (session: Session): Promise<void> {
 }
 
 export async function getSession (token: string): Promise<Session | null> {
-  return await prisma.session.findFirst({ where: { token: token } })
+  return await prisma.session.findFirst({ where: { token } })
 }
 
 export async function getUserBySession (token: string): Promise<User | null> {
