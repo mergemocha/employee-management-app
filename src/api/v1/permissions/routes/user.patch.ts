@@ -18,7 +18,7 @@ export default async (req: FastifyRequest<{ Params: { user: string }, Body: { pe
     } else if (req.body.permissions.some(hasBadPerm)) {
       await res.status(400).send({ message: `Unknown permission(s) ${req.body.permissions.filter(hasBadPerm).join(', ')}` })
     } else {
-      logger.info(`Updating permissions for user ${user.id}. Old ${JSON.stringify(user.permissions)}, new ${JSON.stringify(req.body.permissions)}`)
+      logger.info(`Updating permissions for user ${user.id}. Old ${JSON.stringify(user.permissions)}, new ${JSON.stringify(req.body.permissions)}.`)
 
       await prisma.user.update({
         where: {

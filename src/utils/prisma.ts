@@ -76,6 +76,9 @@ export async function getSuperuser (): Promise<User> {
  */
 export async function checkAndCreateEmployee (): Promise<void> {
   const empl = await prisma.employee.findMany()
+
+  // TODO: Create many
+
   if (empl.length === 0) {
     const firstName = 'fname'
     const lastName = 'lname'
@@ -86,9 +89,7 @@ export async function checkAndCreateEmployee (): Promise<void> {
     const permanent = true
     const projects = ['1', 'secret', 'operation X']
 
-    logger.info(`Creating test employe ${firstName},${lastName}`)
-
-    await prisma.employee.create({
+    const employee = await prisma.employee.create({
       data: {
         firstName,
         lastName,
@@ -100,5 +101,7 @@ export async function checkAndCreateEmployee (): Promise<void> {
         projects
       }
     })
+
+    logger.info('Created test employee', employee)
   }
 }
