@@ -2,6 +2,12 @@ import { Session, User } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import { convertToSeconds } from '../utils/relative-time'
 
+/**
+ * Initialises a {@link Session} for a {@link User}.
+ *
+ * @param user - The {@link User} to initialise the session for
+ * @returns The newly initialised {@link Session}
+ */
 export async function initSession (user: User): Promise<Session> {
   const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string)
   const expires = convertToSeconds(process.env.TOKEN_LIFETIME as string)
@@ -17,6 +23,20 @@ export async function initSession (user: User): Promise<Session> {
   return session
 }
 
+/**
+ * Validates that a {@link Session#token}:
+ * - Is a valid JWT
+ * - Is an existing session
+ * - Belongs to the user encoded within it
+ * - Is not expired
+ *
+ * By supplying the refresh parameter, the session can be refreshed (i.e. a new token generated and the old one discarded)
+ * so the user does not ever have to re-login if they just keep logging in more often than the token lifetime.
+ *
+ * @param token - Token to validate
+ * @param refresh - Whether to refresh the session
+ * @returns Whether the session was valid, and if refresh is enabled, the new session to give to the user instead
+ */
 export async function validateSession (token: string, refresh?: boolean): Promise<{ isValid: boolean, newSession?: Session }> {
   try {
     // Check that JWT is valid
