@@ -1,8 +1,8 @@
-import dotenv from 'dotenv-safe'
+import dotenv from 'dotenv'
 import pino from 'pino'
 
 export default (): void => {
-  dotenv.config({ allowEmptyValues: true })
+  dotenv.config()
 
   global.logger = pino({
     level: process.env.LOG_LEVEL,
