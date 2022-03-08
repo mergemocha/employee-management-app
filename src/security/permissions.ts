@@ -4,6 +4,8 @@ export type Permission = `read:employee.${keyof Employee}`
 
 let available: Permission[]
 
+load()
+
 export function load (): void {
   try {
     if (!process.env.RESTRICTED_FIELDS) {
