@@ -50,7 +50,7 @@ export async function validateSession (token: string, refresh?: boolean): Promis
 
     if (expires <= now) {
       await terminateSession(session)
-      throw new Error(`User ${id} submitted expired token; token expired at ${expires}, current time is ${now}`)
+      throw new Error(`User ${id} submitted expired token; token expired at ${DateTime.fromMillis(expires).toLocal()}, current time is ${DateTime.fromMillis(now)}`)
     }
 
     let newSession
