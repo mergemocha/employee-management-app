@@ -22,7 +22,9 @@ export default async (req: FastifyRequest, res: FastifyReply): Promise<void> => 
         continue
       }
     }
+
     result.push(resultemployee)
   }
+
   await res.send(result)
 }

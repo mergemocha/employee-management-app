@@ -28,6 +28,7 @@ export default async (req: FastifyRequest<{ Params: { user: string }, Body: { pe
           permissions: req.body.permissions
         }
       })
+
       await res.status(200).send({ message: 'OK' })
     }
   }

@@ -13,6 +13,7 @@ interface Body {
   permanent: boolean
   projects: string[]
 }
+
 class Validator {
   @jf.string().required() id: string
   @jf.string() firstName: string
