@@ -25,10 +25,10 @@ export default async (req: FastifyRequest<{ Params: { user: string }, Body: { pe
           id: req.params.user
         },
         data: {
-          ...user,
           permissions: req.body.permissions
         }
       })
+      await res.status(200).send({ message: 'OK' })
     }
   }
 }
