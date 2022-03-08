@@ -12,6 +12,7 @@ export default async (req: FastifyRequest, res: FastifyReply): Promise<void> => 
   const employees = await prisma.employee.findMany() as IndexableEmployee[]
   const result: Array<Partial<IndexableEmployee>> = []
 
+  console.log(employees)
   for (const employee of employees) {
     const resultemployee: Partial<IndexableEmployee> = {}
 
@@ -21,8 +22,8 @@ export default async (req: FastifyRequest, res: FastifyReply): Promise<void> => 
       } else {
         resultemployee[key] = employee[key]
       }
-      result.push(resultemployee)
     }
+    result.push(resultemployee)
   }
   await res.send(result)
 }
