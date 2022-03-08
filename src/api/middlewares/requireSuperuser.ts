@@ -3,13 +3,15 @@ import { isSuperuser } from '../../security/permissions'
 import { getUserBySession, validateSession } from '../../security/session'
 
 export default async (req: FastifyRequest, res: FastifyReply, done: (err?: any) => void): Promise<void> => {
-  if (!req.headers.authorization) {
+  const { authorization } = req.headers
+
+  if (!authorization) {
     done(new Error('Authorization header not present'))
   } else {
-    if (!(await validateSession(req.headers.authorization)).isValid) {
+    if (!(await validateSession(authorization)).isValid) {
       done(new Error('Unauthorized'))
     } else {
-      const user = await getUserBySession(req.headers.authorization)
+      const user = await getUserBySession(authorization)
 
       if (!user) {
         done(new Error('Unauthorized'))

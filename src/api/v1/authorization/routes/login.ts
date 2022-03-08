@@ -1,22 +1,21 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { checkPassword } from '../../../../security/passwords'
+import * as authStrategies from '../../../../security/authentication-strategies'
 
-export default async (req: FastifyRequest<{ Body: { username: string, password: string } }>, res: FastifyReply): Promise<void> => {
-  if (!req.body.username || !req.body.password) {
-    await res.status(400).send({ message: 'User or password not specified' })
+export default async (req: FastifyRequest<{ Body: { username?: string, password?: string } }>, res: FastifyReply): Promise<void> => {
+  const { username, password } = req.body
+  const { authorization } = req.headers
+  const hasUsernameAndPW = !!username && !!password
+  const hasHeader = !!authorization
+
+  if (hasHeader && hasUsernameAndPW) {
+    await res.status(400).send({ message: 'Both username+password and token authentication supplied; can only authenticate with one strategy at a time' })
   } else {
-    const user = await prisma.user.findFirst({ where: { username: req.body.username } })
-
-    if (!user) {
-      await res.status(401).send({ message: 'Invalid username or password' })
+    if (hasUsernameAndPW) {
+      await authStrategies.withCredentials(username, password, res)
+    } else if (hasHeader) {
+      await authStrategies.withHeader(authorization, res)
     } else {
-      const isCorrectPassword = await checkPassword(req.body.password, user.password)
-
-      if (isCorrectPassword) {
-        await res.status(200).send({ message: 'Login succesful' })
-      } else {
-        await res.status(401).send({ message: 'Invalid username or password' })
-      }
+      await res.status(400).send({ message: 'No authentication strategy supplied' })
     }
   }
 }
