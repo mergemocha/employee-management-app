@@ -1,5 +1,6 @@
 import { Session, User } from '@prisma/client'
 import jwt from 'jsonwebtoken'
+import { DateTime } from 'luxon'
 import { convertToSeconds } from '../utils/relative-time'
 
 export async function initSession (user: User): Promise<Session> {
@@ -9,10 +10,16 @@ export async function initSession (user: User): Promise<Session> {
   const session = await prisma.session.create({
     data: {
       token,
-      expires: Date.now() + expires,
+      expires: Date.now() + (expires * 1000),
       userId: user.id
     }
   })
+
+  const now = DateTime.now()
+  const expiration = DateTime.fromMillis(session.expires)
+  const diff = expiration.diff(now)
+
+  logger.info(`Initialised session ${session.id} for user ${session.userId} to expire at ${expiration.toLocal()} (${diff.toHuman()}).`)
 
   return session
 }
