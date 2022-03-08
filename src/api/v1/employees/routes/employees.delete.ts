@@ -9,6 +9,6 @@ export default async (req: FastifyRequest<{Body: { id: string } }>, res: Fastify
         id: req.body.id
       }
     })
-    await res.status(200).send({ message: 'ok' })
+    await res.status(200).send({ message: 'OK' })
   }
 }

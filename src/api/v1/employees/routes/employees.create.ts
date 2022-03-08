@@ -40,6 +40,6 @@ export default async (req: FastifyRequest<{Body: Body}>, res: FastifyReply): Pro
         projects: req.body.projects
       }
     })
-    await res.status(200).send({ message: 'ok' })
+    await res.status(200).send({ message: 'OK' })
   }
 }
