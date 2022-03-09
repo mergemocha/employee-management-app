@@ -1,17 +1,7 @@
 import 'reflect-metadata'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import * as jf from 'joiful'
-
-interface Body {
-  firstName: string
-  lastName: string
-  title: string
-  department: string
-  salary: number
-  secLevel: number
-  permanent: boolean
-  projects: string[]
-}
+import { Employee } from '@prisma/client'
 
 class Validator {
   @jf.string().required() firstName: string
@@ -24,8 +14,9 @@ class Validator {
   @jf.array().required() projects: string[]
 }
 
-export default async (req: FastifyRequest<{Body: Body}>, res: FastifyReply): Promise<void> => {
-  const { error } = jf.validateAsClass(req.body, Validator)
+export default async (req: FastifyRequest<{ Body: Omit<Employee, 'id'> }>, res: FastifyReply): Promise<void> => {
+  const { error } = jf.validateAsClass(req.body ?? {}, Validator)
+
   if (error) {
     await res.status(400).send({ message: 'Validation error', error })
   } else {
@@ -41,6 +32,7 @@ export default async (req: FastifyRequest<{Body: Body}>, res: FastifyReply): Pro
         projects: req.body.projects
       }
     })
+
     await res.status(200).send({ message: 'OK' })
   }
 }
