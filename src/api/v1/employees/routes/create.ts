@@ -26,8 +26,8 @@ export default async (req: FastifyRequest<{ Body: Omit<Employee, 'id'> }>, res: 
         lastName: req.body.lastName,
         title: req.body.title,
         department: req.body.department,
-        salary: req.body.salary,
-        secLevel: req.body.secLevel,
+        salary: +req.body.salary,
+        secLevel: +req.body.secLevel,
         permanent: req.body.permanent,
         projects: req.body.projects
       }
