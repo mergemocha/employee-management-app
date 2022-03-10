@@ -5,6 +5,7 @@ import employees from './employees'
 import permissions from './permissions'
 import auth from './auth'
 import register from './register'
+import users from './users'
 
 export default async (fastify: FastifyInstance, options: FastifyPluginOptions): Promise<void> => {
   await fastify
@@ -12,4 +13,5 @@ export default async (fastify: FastifyInstance, options: FastifyPluginOptions): 
     .register(auth, { prefix: '/auth' })
     .register(register, { prefix: '/register' })
     .register(employees, { prefix: '/employees' })
+    .register(users, { prefix: '/users' })
 }
