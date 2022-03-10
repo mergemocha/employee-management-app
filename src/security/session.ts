@@ -116,7 +116,7 @@ export async function getSession (token: string): Promise<Session | null> {
 export async function getUserBySession (token: string): Promise<User | null> {
   const session = await getSession(token)
   if (!session) {
-    logger.warn(`Session corresponding to token ${token} not found. Session has possibly expired`)
+    logger.warn(`Session corresponding to token ${token} not found. Session has possibly expired.`)
     return null
   } else {
     return await prisma.user.findFirst({ where: { id: session.userId } })

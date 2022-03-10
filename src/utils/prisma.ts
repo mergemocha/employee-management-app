@@ -74,31 +74,25 @@ export async function getSuperuser (): Promise<User> {
 /**
  * Creates a single employee for testing purposes.
  */
-export async function checkAndCreateEmployee (): Promise<void> {
+export async function checkAndCreateEmployees (): Promise<void> {
   const empl = await prisma.employee.findMany()
+
   if (empl.length === 0) {
-    const firstName = 'fname'
-    const lastName = 'lname'
-    const title = 'very important guy'
-    const department = 'Secret department'
-    const salary = 99999999
-    const secLevel = 5
-    const permanent = true
-    const projects = ['1', 'secret', 'operation X']
+    for (let i = 0; i < 10; i++) {
+      const employee = await prisma.employee.create({
+        data: {
+          firstName: 'John',
+          lastName: 'Appleseed',
+          title: 'Senior Software Engineer',
+          department: 'Engineering',
+          salary: 100000,
+          secLevel: 5,
+          permanent: true,
+          projects: ['Hubbard', 'Mastodon']
+        }
+      })
 
-    logger.info(`Creating test employe ${firstName},${lastName}`)
-
-    await prisma.employee.create({
-      data: {
-        firstName,
-        lastName,
-        title,
-        department,
-        salary,
-        secLevel,
-        permanent,
-        projects
-      }
-    })
+      logger.info(`Created test employee ${JSON.stringify(employee)}`)
+    }
   }
 }

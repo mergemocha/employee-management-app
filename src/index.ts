@@ -40,7 +40,7 @@ void (async () => {
     logger.info('Prisma connection successful.')
 
     await prismaUtils.checkAndCreateSuperuser()
-    await prismaUtils.checkAndCreateEmployee()
+    await prismaUtils.checkAndCreateEmployees()
 
     await fastify
       .register(cors)

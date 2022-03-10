@@ -6,8 +6,8 @@ import get from './routes/get'
 import update from './routes/update'
 
 export default async (fastify: FastifyInstance, options: FastifyPluginOptions): Promise<void> => {
-  fastify.get('/get', { ...requiresAuth(fastify), handler: get })
-  fastify.post('/create', { ...requiresSuperuser(fastify), handler: create })
-  fastify.post('/delete', { ...requiresSuperuser(fastify), handler: remove })
-  fastify.post('/update', { ...requiresSuperuser(fastify), handler: update })
+  fastify.get('/', { ...requiresAuth(fastify), handler: get })
+  fastify.post('/', { ...requiresSuperuser(fastify), handler: create })
+  fastify.delete('/:id', { ...requiresSuperuser(fastify), handler: remove })
+  fastify.patch('/:id', { ...requiresSuperuser(fastify), handler: update })
 }
