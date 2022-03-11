@@ -48,7 +48,7 @@ void (async () => {
       .register(auth)
       .register(v1, { prefix: '/api/v1', prisma })
 
-    await fastify.listen(parseInt(process.env.PORT as string))
+    await fastify.listen(parseInt(process.env.PORT as string), '0.0.0.0')
   } catch (err) {
     logger.error(`Could not start application: ${(err as Error).stack}`)
   } finally {

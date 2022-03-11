@@ -7,9 +7,6 @@ WORKDIR ${INSTALLDIR}
 
 CMD [ "node", "." ]
 
-RUN apt-get update
-RUN apt-get install -y curl jq
-
 COPY package*.json ${INSTALLDIR}
 RUN npm ci
 

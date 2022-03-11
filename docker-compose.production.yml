@@ -6,12 +6,13 @@ services:
       context: .
       dockerfile: Dockerfile
       cache_from:
-        - node:alpine
+        - node:latest
     entrypoint:
       - bash
       - -c
       - |
         if [[ -f .firstboot ]]; then node .; fi
+        sleep 10
         npm run prisma:up
         npm run build
         touch .firstboot
@@ -23,8 +24,8 @@ services:
       - db-starter
       - mongodb-primary
       - mongodb-replica
-    volumes:
-      - ./docker-entrypoint-initdb.d/mongo-post-init.js:/docker-entrypoint-initdb.d/mongo-post-init.js
+    ports:
+      - 3001:3001
   db-starter:
     container_name: db-starter
     build:
@@ -59,7 +60,6 @@ services:
       - 27017:27017
     volumes:
       - ./docker-entrypoint-initdb.d/mongo-init.sh:/docker-entrypoint-initdb.d/00-mongo-init.sh
-      - ./docker-entrypoint-initdb.d/mongo-post-init.js:/docker-entrypoint-initdb.d/mongo-post-init.js
       - ./docker-entrypoint-initdb.d/prod.key:/docker-entrypoint-initdb.d/prod.key
   mongodb-replica:
     container_name: mongodb-replica
@@ -81,5 +81,4 @@ services:
       - 27018:27017
     volumes:
       - ./docker-entrypoint-initdb.d/mongo-init.sh:/docker-entrypoint-initdb.d/00-mongo-init.sh
-      - ./docker-entrypoint-initdb.d/mongo-post-init.js:/docker-entrypoint-initdb.d/mongo-post-init.js
       - ./docker-entrypoint-initdb.d/prod.key:/docker-entrypoint-initdb.d/prod.key
